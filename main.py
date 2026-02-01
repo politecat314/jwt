@@ -5,6 +5,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from jose import JWTError, jwt
+from fastapi import Request
 
 
 # --- CONFIGURATION ---
@@ -99,6 +100,10 @@ async def register_user(user: UserRegister):
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+
+    print("USERNAME:", form_data.username)
+    print("PASSWORD:", form_data.password)
+
     # OAuth2PasswordRequestForm automatically looks for 'username' and 'password' fields
     user_dict = fake_users_db.get(form_data.username)
     if not user_dict:
